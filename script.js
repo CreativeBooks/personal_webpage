@@ -83,49 +83,64 @@ async function fetchLastFmTracks() {
 
 // Wait for DOM to load
 document.addEventListener('DOMContentLoaded', function() {
-    const starLink = document.querySelector('.star-link');
+    const starLinks = document.querySelectorAll('.star-link');
     const landingPage = document.querySelector('.landing-page');
-    const contentPage = document.querySelector('.content');
-    const backButton = document.querySelector('.back-button');
+    const contentPages = document.querySelectorAll('.content');
+    const backButtons = document.querySelectorAll('.back-button');
     
-    // Function to go to WIP page
-    function goToWIPPage(e) {
+    // Function to go to a content page
+    function goToPage(e) {
         e.preventDefault();
+        
+        // Get the target page ID from href
+        const targetId = this.getAttribute('href').substring(1); // Remove the #
+        const targetPage = document.getElementById(targetId);
+        
+        if (!targetPage) return;
+        
+        // Hide all content pages first
+        contentPages.forEach(page => {
+            page.classList.remove('active');
+        });
         
         // Trigger zoom out animation on landing page
         landingPage.classList.add('zoom-out');
         
-        // Show content page after animation starts
+        // Show target content page after animation starts
         setTimeout(() => {
-            contentPage.classList.add('active');
+            targetPage.classList.add('active');
         }, 200);
+        
+        // Completely hide landing page after animation completes
+        setTimeout(() => {
+            landingPage.classList.add('hidden');
+        }, 800);
     }
     
     // Function to go back to main page
     function goBackToMain(e) {
         e.preventDefault();
         
-        // Hide content page with zoom out
-        contentPage.classList.remove('active');
+        // Hide all content pages
+        contentPages.forEach(page => {
+            page.classList.remove('active');
+        });
         
-        // Show landing page again after content starts hiding
+        // Remove hidden class and zoom-out to show landing page again
+        landingPage.classList.remove('hidden');
+        
         setTimeout(() => {
             landingPage.classList.remove('zoom-out');
         }, 200);
     }
     
-    // Add event listeners
-    if (starLink && landingPage && contentPage) {
-        starLink.addEventListener('click', goToWIPPage);
-    } else {
-        console.log('Missing elements:', {
-            starLink: !!starLink,
-            landingPage: !!landingPage,
-            contentPage: !!contentPage
-        });
-    }
+    // Add event listeners to all star links
+    starLinks.forEach(link => {
+        link.addEventListener('click', goToPage);
+    });
     
-    if (backButton) {
-        backButton.addEventListener('click', goBackToMain);
-    }
+    // Add event listeners to all back buttons
+    backButtons.forEach(button => {
+        button.addEventListener('click', goBackToMain);
+    });
 });
