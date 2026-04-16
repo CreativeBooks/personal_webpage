@@ -257,12 +257,13 @@ body, html {
 }
 
 .content {
+    display: none;
     position: relative;
     z-index:1;
     padding:50px;
     color:white;
     font-family:"Protest Revolution", cursive;
-    transform:scale(1.5);
+    transform:scale(1.1);
     opacity:0;
     transition:transform 0.8s ease, opacity 0.8s ease;
     background:transparent;
@@ -270,6 +271,7 @@ body, html {
 }
 
 .content.active {
+    display:block;
     transform:scale(1);
     opacity:1;
 }
@@ -327,4 +329,36 @@ a {
 
 p{ 
     font-size:15px;
+}
+
+.carousel {
+    width:100%;
+    height:100%;
+    position:relative;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-image {
+    width:100%;
+    height:100%;
+    position:relative;
+    overflow: hidden;
+}
+
+.carousel-image img {
+    width:95%;
+    object-fit: cover;
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0;
+    transition: opacity 1s ease-in-out;
+    margin-left:7px;
+    margin-right:5px;
+}
+
+.carousel-image img.active {
+    opacity:1;
 }

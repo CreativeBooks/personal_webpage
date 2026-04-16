@@ -44,6 +44,23 @@ document.addEventListener('mousemove', function(e) {
     }, 800);
 });
 
+function startCarousels() {
+    const carousels = document.querySelectorAll('.carousel');
+
+    carousels.forEach(carousel => {
+        const images = carousel.querySelectorAll('.carousel-image img');
+        let currentIndex = 0;
+
+        setInterval(() => {
+            images[currentIndex].classList.remove('active');
+
+            currentIndex = (currentIndex + 1) % images.length;
+
+            images[currentIndex].classList.add('active');
+        }, 3000);
+    })
+}
+
 async function fetchLastFmTracks() {
     const API_KEY = '0a67d5c7127be015de1e47f026d8c968';
     const USERNAME = 'pgarg1606';
@@ -101,12 +118,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hide all content pages first
         contentPages.forEach(page => {
             page.classList.remove('active');
+            page.style.display = 'none';
         });
         
         // Trigger zoom out animation on landing page
         landingPage.classList.add('zoom-out');
         
         // Show target content page after animation starts
+        targetPage.style.display = 'block';
         setTimeout(() => {
             targetPage.classList.add('active');
         }, 200);
@@ -143,4 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
     backButtons.forEach(button => {
         button.addEventListener('click', goBackToMain);
     });
+
+    startCarousels();
 });
+
